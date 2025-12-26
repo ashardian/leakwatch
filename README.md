@@ -1,100 +1,167 @@
-🛡️ LeakWatch v3.0 | Linux Privacy & Leak Command Center
-An advanced, "Ops-Ready" Linux privacy auditing tool designed for security researchers operating in hostile network environments.
+![LeakWatch Screenshot](https://github.com/ashardian/leakwatch/blob/main/img/assets/screenshot.png)
 
-LeakWatch goes beyond passive configuration checks. It performs active reconnaissance on your system's kernel, firewall, and network stack, culminating in a live "wire tap" of your physical network interface to ensure absolutely no unencrypted traffic is escaping your VPN tunnel.
+# 🛡️ LeakWatch v3.0  
+### Linux Privacy & Leak Command Center
 
-It features a zero-config, auto-detecting workflow presented in a premium "Command Center" TUI (Text User Interface).
+**LeakWatch** is an advanced, *ops-ready* Linux privacy auditing tool designed for **security researchers, red teamers, journalists, and privacy professionals** operating in hostile or untrusted network environments.
 
-🖥️ Command Center Interface
-The persistent TUI displaying identity resolution, kernel audit results, and live packet analysis.
+Unlike traditional tools that rely on passive configuration checks, LeakWatch performs **active reconnaissance** across your system’s **kernel, firewall, routing stack, and live network traffic**, culminating in a real-time **wire-tap** of your physical network interface to ensure **no unencrypted traffic escapes your VPN tunnel**.
 
-🚀 Key Features
-📡 Active Wire Tap ("Military-Grade" Check)
-Most tools just check your public IP. LeakWatch attaches a packet sniffer (Scapy) to your physical network card (e.g., eth0 or wlan0) while connected to a VPN. It analyzes outgoing packets in real-time.
+All of this is presented through a **zero-configuration**, auto-detecting workflow inside a premium **Command Center TUI** (Text User Interface).
 
-Smart Filtering: intelligently ignores local LAN traffic (10.x, 192.168.x), VM chatter, and encrypted traffic destined for your VPN server cluster.
+---
 
-Leak Detection: Any DNS query or TCP/UDP packet leaving the physical interface towards the clearnet is immediately flagged as a Critical Leak.
+## 🖥️ Command Center Interface
 
-🧠 Zero-Config Automation
-No complex flags required. On launch, the tool uses heuristics to automatically detect:
+A persistent, full-screen TUI that displays:
 
-Your active physical interface.
+- Identity & geolocation resolution
+- Kernel and system hardening audit results
+- Firewall kill-switch validation
+- Live packet analysis from the physical interface
 
-Your VPN/Tunnel interface.
+Built using the **`rich`** library for clear, modern situational awareness.
 
-Your real Gateway IP.
+---
 
-Your current public identity.
+## 🚀 Key Features
 
-🛡️ Fortress Audit (System Hardening)
-Checks underlying Linux configurations that could compromise anonymity:
+### 📡 Active Wire Tap (Military-Grade Leak Detection)
 
-Kernel Parameters (sysctl): Audits IP Forwarding, IPv6 global state, and ICMP Redirect acceptance.
+Most tools only check your public IP.  
+**LeakWatch attaches a live packet sniffer (Scapy)** directly to your **physical interface** (`eth0`, `wlan0`, etc.) *while your VPN is active*.
 
-Firewall Killswitch: Verifies if iptables or nftables rules exist to block traffic if the VPN connection drops (Fail-Closed).
+**How it works:**
+- Monitors outbound packets in real time
+- Confirms traffic is encapsulated inside the VPN tunnel
 
-Transparent Proxy Detection: Detects if your ISP or local network is intercepting and redirecting DNS queries.
+**Smart Filtering**
+- Ignores local LAN traffic (`10.x`, `192.168.x`)
+- Ignores VM chatter and tunnel-encrypted packets
+- Focuses exclusively on *clearnet-bound traffic*
 
-💻 Premium "Cyber-HUD" TUI
-Forget scrolling text logs. The tool launches a full-screen, persistent dashboard using the rich library, providing instant situational awareness across four panels: Identity Matrix, Network Config, Fortress Audit, and Live Traffic Feed.
+**Leak Detection**
+- Any DNS query or TCP/UDP packet exiting the physical interface unencrypted is flagged as a **CRITICAL LEAK**
 
-📦 Installation
-Prerequisites
-Linux OS (Debian, Kali, Ubuntu, Arch, etc.)
+---
 
-Python 3.8+
+### 🧠 Zero-Config Automation
 
-Root Privileges (Required for active packet sniffing and reading restricted kernel/firewall configurations)
+No flags. No guessing.
 
-Setup
+On launch, LeakWatch automatically detects:
+- Active physical network interface
+- VPN / tunnel interface (`tun0`, `wg0`, etc.)
+- Real gateway IP
+- Current public identity and ASN
+
+---
+
+### 🛡️ Fortress Audit (System Hardening)
+
+Deep inspection of Linux internals that directly impact anonymity:
+
+**Kernel Parameters (`sysctl`)**
+- IP forwarding state
+- IPv6 global availability
+- ICMP redirect acceptance
+
+**Firewall Kill-Switch Validation**
+- Audits `iptables` / `nftables`
+- Verifies fail-closed behavior if VPN drops
+
+**Transparent Proxy Detection**
+- Detects DNS interception and forced redirection by ISP or local networks
+
+---
+
+### 💻 Premium “Cyber-HUD” TUI
+
+Forget scrolling logs.
+
+LeakWatch launches a **full-screen Command Center** with four live panels:
+
+1. **Identity Matrix** – IP, ASN, geo, VPN state  
+2. **Network Configuration** – Interfaces, routes, gateways  
+3. **Fortress Audit** – Kernel & firewall health  
+4. **Live Traffic Feed** – Real-time packet verdicts  
+
+Designed for **instant situational awareness**.
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Linux OS (Debian, Kali, Ubuntu, Arch, Mint, etc.)
+- Python **3.8+**
+- **Root privileges**  
+  *(required for packet sniffing and reading kernel/firewall configs)*
+
+---
+
+### Setup
+
 Clone the repository:
-
-Bash
-
+```bash
 git clone https://github.com/ashardian/leakwatch.git
 cd leakwatch
+```
+
 Install dependencies:
-
-Bash
-
+```bash
 sudo pip3 install -r requirements.txt
-⚔️ Usage
-Connect to your VPN, then run the tool as root. It will handle the rest.
+```
 
-Bash
+---
 
+## ⚔️ Usage
+
+> **Connect to your VPN first**, then run LeakWatch as root.
+
+```bash
 sudo python3 main.py
-The Workflow:
+```
 
-The tool initializes and auto-calibrates sensors.
+### Workflow
 
-It presents the detected target interface and public IP.
+1. Tool initializes and auto-calibrates sensors
+2. Detected interface and public identity are displayed
+3. Command Center launches
+4. Diagnostics run sequentially
+5. **Active Wire Tap** runs for ~5 seconds
+6. Dashboard enters persistent monitoring mode
 
-Upon confirmation, it launches the full-screen Command Center.
+Press **Ctrl+C** to exit.
 
-Diagnostics run sequentially. The "Active Wire Tap" runs last for 5 seconds.
+---
 
-Once complete, the dashboard enters persistent monitoring mode. Review the data and press Ctrl+C to exit.
+## 📂 Project Structure
 
-📂 Project Structure
+```
 leakwatch/
 ├── assets/
-│   └── screenshot.png       # Image for README
-├── core/                    # The Logic Engine (No UI code here)
+│   └── screenshot.png
+├── core/
 │   ├── __init__.py
-│   ├── auto_config.py       # Heuristics for interface/IP detection
-│   ├── firewall.py          # iptables/nftables auditor
-│   ├── net_audit.py         # IP geography, DNS proxy, gateway detection
-│   ├── sys_audit.py         # Kernel parameter (sysctl) checker
-│   └── traffic.py           # Scapy-based active packet sniffer
-├── utils/                   # The Visualization Engine
+│   ├── auto_config.py
+│   ├── firewall.py
+│   ├── net_audit.py
+│   ├── sys_audit.py
+│   └── traffic.py
+├── utils/
 │   ├── __init__.py
-│   └── dashboard.py         # The 'rich' layout engine for the TUI
-├── main.py                  # The Orchestrator (Connects Core to Utils)
-├── requirements.txt         # Python dependencies
-└── README.md                # This file
-⚠️ Disclaimer
-This tool is for educational and defensive purposes only. It is designed to help users verify their own security posture. The authors are not responsible for any misuse or damage caused by this program.
+│   └── dashboard.py
+├── main.py
+├── requirements.txt
+└── README.md
+```
 
-Root privileges are powerful. While this tool is designed to read configurations and sniff packets passively without altering your system, always review code before running it with sudo.
+---
+
+## ⚠️ Disclaimer
+
+This tool is intended **strictly for educational and defensive purposes**.
+
+Root privileges are powerful. Review the code before running with `sudo`.
