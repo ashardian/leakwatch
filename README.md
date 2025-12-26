@@ -1,4 +1,4 @@
-![LeakWatch Screenshot](https://github.com/ashardian/leakwatch/blob/main/img/assets/screenshot.png)
+![LeakWatch Screenshot](https://github.com/ashardian/leakwatch/blob/main/assets/screenshot.png)
 
 # 🛡️ LeakWatch v3.0  
 ### Linux Privacy & Leak Command Center
